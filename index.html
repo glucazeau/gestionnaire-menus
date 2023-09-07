@@ -3,49 +3,127 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Menus - générateur</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+     <!-- Bootstrap Font Icon CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   </head>
   <body>
     <main role="main">
 
-      <section class="jumbotron text-center">
+  <section class="py-1 text-center container">
+    <div class="row py-lg-1">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">☀️ mardi 5 septembre 2023 ☀️</h1>
+      </div>
+    </div>
+  </section>
+      <div class="album py-3 bg-light">
         <div class="container">
-          <h1 class="jumbotron-heading">Générateur de menus</h1>
-        </div>
-      </section>
-
-      <div class="album py-5 bg-light">
-        <div class="container">
-
           <div class="row">
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Semaine 35</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">🌱 Printemps</li>
+                        <li class="list-group-item">☀️ Eté</li>
+                        <li class="list-group-item">🍂 Automne</li>
+                        <li class="list-group-item">🌨️ Hiver</li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow border border-success">
+                <div class="card-body">
+                    <h5 class="card-title">Semaine 36</h5>
+                    <p class="card-text">
+                        <ul class="list-group">
+                            <li class="list-group-item">🌱 Printemps</li>
+                            <li class="list-group-item">☀️ Eté</li>
+                            <li class="list-group-item">🍂 Automne</li>
+                            <li class="list-group-item">🌨️ Hiver</li>
+                        </ul>
+                    </p>
+                    <p class="card-text">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><span class="bi-arrow-clockwise"> Regénérer</button>
+                            <button type="button" class="btn btn-sm btn-outline-success"><span class="bi-check-lg"> Enregistrer</button>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+              </div>
+            </div>
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
                 <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item">☀️ An item</li>
-                    <li class="list-group-item">A second item</li>
-                    <li class="list-group-item">A third item</li>
-                    <li class="list-group-item">A fourth item</li>
-                    <li class="list-group-item">And a fifth one</li>
-                </ul>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <button type="button" class="btn btn-sm btn-outline-secondary"><span class="bi-search"></span></i></button>
-                      <button type="button" class="btn btn-sm btn-outline-success"><i class="fa fa-arrow-clockwise"></i> Edit</button>
-                    </div>
-                    <small class="text-muted">9 mins</small>
-                  </div>
+                    <h5 class="card-title">Semaine 37</h5>
+                    <p class="card-text">
+                        <table class="table">
+                          <tbody>
+                            <tr>
+                              <th scope="row">lundi</th>
+                              <td>Pizza 🍕 💸</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">mardi</th>
+                              <td>Pizza (maison) 🍕</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">mercredi</th>
+                              <td>Spaghettis bolognaise 🍝 💸</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">jeudi</th>
+                              <td>Sushis 🍣 💸</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">vendredi</th>
+                              <td>Aubergines grillées 🍆</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">samedi (midi)</th>
+                              <td>Poulet / champignons 🍗 🍄</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">samedi (soir)</th>
+                              <td>Sushis 🍣 💸</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">dimanche (midi)</th>
+                              <td>Steaks 🥩</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">dimanche (soir)</th>
+                              <td>Sushis 🍣 💸</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </p>
+                    <p class="card-text">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"><span class="bi-arrow-clockwise"> Regénérer</button>
+                            <button type="button" class="btn btn-sm btn-outline-success"><span class="bi-check-lg"> Enregistrer</button>
+                            </div>
+                        </div>
+                    </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
