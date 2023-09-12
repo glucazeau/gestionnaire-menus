@@ -2,3 +2,4 @@ fastapi==0.103.1
 loguru==0.7.1
 sqlalchemy==2.0.20
 pydantic==2.3.0
+uvicorn[standard]

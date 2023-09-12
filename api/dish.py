@@ -1,38 +1,21 @@
-from pydantic import BaseModel
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.orm import MappedAsDataclass, Session, DeclarativeBase
-
-
-
-class Base(MappedAsDataclass, DeclarativeBase):
-    pass
-
-class DishModel(BaseModel):
-    name: str
-
-
-class DishEntity(Base):
-    __tablename__ = "menus"
-
-    id: Mapped[int] = mapped_column(init=False, primary_key=True)
-    name: Mapped[str]
-
-
-#def list_dishes():
-    #return [
-    #    DishEntity(name="Pâtes carbonara"),
-    #    DishEntity(name="Spaghetti bolognaise"),
-    #    DishEntity(name="Sushi"),
-    #    DishEntity(name="Pizza"),
-#]
+from sqlalchemy.orm import Session
+from loguru import logger
+import models
+import schemas
 
 
 def list_dishes(db: Session):
-    return db.query(DishEntity)
+    return db.query(models.Dish)
 
 
-def create_dish(db: Session, dish: DishModel):
-    new_dish = DishEntity(name=dish.name)
+def create_dish(db: Session, dish: schemas.CreateDish):
+    logger.info(f"Creating dish from body {dish}")
+    logger.debug(f"Retrieving season objects from ids {dish.seasons}")
+    get_seasons = (
+        db.query(models.Season).filter(models.Season.id.in_(dish.seasons)).all()
+    )
+    logger.debug(f"Found seasons: {get_seasons}")
+    new_dish = models.Dish(name=dish.name, seasons=get_seasons)
     db.add(new_dish)
     db.commit()
     db.refresh(new_dish)

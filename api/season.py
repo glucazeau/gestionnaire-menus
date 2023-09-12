@@ -1,16 +1,11 @@
-from dataclasses import dataclass
+from sqlalchemy.orm import Session
+
+from models import Season
 
 
-@dataclass
-class Season:
-    name: str
-    icon: str
+def list_seasons(db: Session):
+    return db.query(Season).all()
 
 
-def list_seasons():
-    return [
-        Season("Printemps", "🌱"),
-        Season("Été", "☀"),
-        Season("Automne", "🍂"),
-        Season("Hiver", "🌨️"),
-    ]
+def get_season(date):
+    return season
