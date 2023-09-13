@@ -15,7 +15,9 @@ def create_dish(db: Session, dish: schemas.CreateDish):
         db.query(models.Season).filter(models.Season.id.in_(dish.seasons)).all()
     )
     logger.debug(f"Found seasons: {get_seasons}")
-    new_dish = models.Dish(name=dish.name, seasons=get_seasons)
+    new_dish = models.Dish(
+        name=dish.name, from_restaurant=dish.from_restaurant, seasons=get_seasons
+    )
     db.add(new_dish)
     db.commit()
     db.refresh(new_dish)

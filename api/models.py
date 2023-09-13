@@ -2,16 +2,7 @@ import datetime
 import enum
 
 from typing import List
-from sqlalchemy import (
-    create_engine,
-    String,
-    Enum,
-    Integer,
-    Date,
-    Table,
-    ForeignKey,
-    Column,
-)
+from sqlalchemy import String, Enum, Integer, Date, Table, ForeignKey, Column, Boolean
 from sqlalchemy.event import listens_for
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
 
@@ -67,6 +58,7 @@ class Dish(Base):
     seasons: Mapped[List[Season]] = relationship(
         back_populates="dishes", secondary="seasons_dishes"
     )
+    from_restaurant: Mapped[bool] = Column(Boolean, unique=False, default=False)
 
     def __repr__(self):
         return f"Dish(name={self.name})"
