@@ -1,5 +1,9 @@
 import datetime
 
+from sqlalchemy.orm import Session
+
+import models
+
 
 def get_current_week_number():
     now = datetime.datetime.now()
@@ -21,3 +25,7 @@ def get_days(week, year):
 
 def init_week():
     pass
+
+
+def list_weeks(db: Session):
+    return db.query(models.Week).all()

@@ -2,6 +2,12 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 
+class Week(BaseModel):
+    year: int
+    number: int
+    is_current: bool
+
+
 class SeasonDish(BaseModel):
     name: str
 

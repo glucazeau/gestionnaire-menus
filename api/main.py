@@ -5,6 +5,7 @@ from typing import List
 import dish
 import schemas
 import season
+import week
 
 from database import SessionLocal, engine, Base
 
@@ -37,3 +38,8 @@ async def get_dishes(db: Session = Depends(get_db)):
 @app.get("/seasons", response_model=List[schemas.Season])
 async def get_seasons(db: Session = Depends(get_db)):
     return season.list_seasons(db)
+
+
+@app.get("/weeks", response_model=List[schemas.Dish])
+async def get_seasons(db: Session = Depends(get_db)):
+    return week.list_weeks(db)

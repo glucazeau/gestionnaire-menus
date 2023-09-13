@@ -44,10 +44,16 @@ def insert_initial_values(target, connection, **kwargs):
     session.commit()
 
 
+class MealMoment(enum.Enum):
+    Matin = 0
+    Soir = 1
+
+
 class Meal(Base):
     __tablename__ = "meals"
 
     id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    type = mapped_column(Enum(MealMoment))
 
 
 class Dish(Base):
@@ -64,13 +70,15 @@ class Dish(Base):
         return f"Dish(name={self.name})"
 
 
-class Day:
+class Day(Base):
     __tablename__ = "days"
 
     number: Mapped[int] = mapped_column(Integer)
     name: Mapped[str] = mapped_column(String(8))
     date: Mapped[datetime.date] = mapped_column(Date, primary_key=True)
     meals: Mapped[List["Meal"]] = relationship()
+    meal_id: Mapped[int] = mapped_column(ForeignKey("meals.id"))
+    week_id: Mapped[int] = mapped_column(ForeignKey("weeks.id"))
 
 
 class WeekStatus(enum.Enum):
@@ -78,9 +86,10 @@ class WeekStatus(enum.Enum):
     SAVED = 1
 
 
-class Week:
+class Week(Base):
     __tablename__ = "weeks"
 
+    id: Mapped[int] = mapped_column(init=False, primary_key=True)
     year: Mapped[int] = mapped_column(Integer, primary_key=True)
     number: Mapped[int] = mapped_column(Integer, primary_key=True)
     days: Mapped[List["Day"]] = relationship()
