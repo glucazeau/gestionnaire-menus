@@ -33,7 +33,10 @@ class Season(Base):
     name: Mapped[str] = mapped_column(String(10))
     icon: Mapped[str] = mapped_column(String(10))
     dishes: Mapped[List["Dish"]] = relationship(
-        init=False, back_populates="seasons", secondary="seasons_dishes"
+        init=False,
+        back_populates="seasons",
+        secondary="seasons_dishes",
+        order_by="asc(Dish.name)",
     )
 
     def __repr__(self):
