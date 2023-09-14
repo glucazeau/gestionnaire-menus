@@ -65,6 +65,7 @@ class Dish(Base):
         back_populates="dishes", secondary="seasons_dishes"
     )
     from_restaurant: Mapped[bool] = Column(Boolean, unique=False, default=False)
+    is_vegetarian: Mapped[bool] = Column(Boolean, default=False)
 
     def __repr__(self):
         return f"Dish(name={self.name})"

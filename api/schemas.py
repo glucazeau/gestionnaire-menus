@@ -21,12 +21,14 @@ class Season(BaseModel):
 class Dish(BaseModel):
     name: str
     from_restaurant: bool
+    is_vegetarian: bool
     seasons: List[Season]
 
 
 class CreateDish(BaseModel):
     name: str
     from_restaurant: Optional[bool] = None
+    vegetarian: Optional[bool] = None
     seasons: List[int]
 
     class Config:

@@ -16,7 +16,10 @@ def create_dish(db: Session, dish: schemas.CreateDish):
     )
     logger.debug(f"Found seasons: {get_seasons}")
     new_dish = models.Dish(
-        name=dish.name, from_restaurant=dish.from_restaurant, seasons=get_seasons
+        name=dish.name,
+        from_restaurant=dish.from_restaurant,
+        seasons=get_seasons,
+        is_vegetarian=dish.vegetarian,
     )
     db.add(new_dish)
     db.commit()
