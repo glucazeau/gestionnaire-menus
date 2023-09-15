@@ -29,10 +29,11 @@ def get_db():
         db.close()
 
 
-@app.get("/init")
+@app.get("/init", status_code=201)
 async def init(db: Session = Depends(get_db)):
     data.init_seasons(db)
     data.init_dishes(db)
+    return "Initial data inserted"
 
 
 @app.post("/dish/", response_model=schemas.Dish)
