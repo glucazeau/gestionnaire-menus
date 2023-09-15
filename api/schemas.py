@@ -3,13 +3,20 @@ import datetime
 from pydantic import BaseModel, computed_field, field_serializer, FieldSerializationInfo
 from typing import List, Optional, Any
 
-from week import is_current
+from week import is_current, MealMoment
 
+class Meal(BaseModel):
+    type: MealMoment
+
+    @field_serializer("type")
+    def serialize_date(self, type: MealMoment, _info):
+        return MealMoment(type).name
 
 class Day(BaseModel):
     number: int
     name: str
     date: datetime.datetime
+    meals: List[Meal]
 
     @field_serializer("date")
     def serialize_date(self, date: datetime.datetime, _info):

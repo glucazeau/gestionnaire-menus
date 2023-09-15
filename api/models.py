@@ -45,7 +45,7 @@ class Season(Base):
 
 
 class MealMoment(enum.Enum):
-    Matin = 0
+    Midi = 0
     Soir = 1
 
 
