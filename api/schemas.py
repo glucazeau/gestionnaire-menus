@@ -1,7 +1,7 @@
 import datetime
 
-from pydantic import BaseModel, computed_field
-from typing import List, Optional
+from pydantic import BaseModel, computed_field, field_serializer, FieldSerializationInfo
+from typing import List, Optional, Any
 
 from week import is_current
 
@@ -10,6 +10,10 @@ class Day(BaseModel):
     number: int
     name: str
     date: datetime.datetime
+
+    @field_serializer("date")
+    def serialize_date(self, date: datetime.datetime, _info):
+        return date.strftime("%d/%m")
 
 
 class Week(BaseModel):
