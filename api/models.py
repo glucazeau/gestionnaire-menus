@@ -3,13 +3,13 @@ import enum
 
 from typing import List
 from sqlalchemy import String, Enum, Integer, Date, Table, ForeignKey, Column, Boolean
-from sqlalchemy.event import listens_for
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
+
 
 from database import Base
 
 
-association_table = Table(
+seasons_dishes = Table(
     "seasons_dishes",
     Base.metadata,
     Column("season_id", ForeignKey("seasons.id")),
@@ -32,16 +32,6 @@ class Season(Base):
 
     def __repr__(self):
         return f"Season(name={self.name})"
-
-
-@listens_for(Season.__table__, "after_create")
-def insert_initial_values(target, connection, **kwargs):
-    session = Session(bind=connection)
-    session.add(Season("Printemps", "🌱"))
-    session.add(Season("Été", "☀"))
-    session.add(Season("Automne", "🍂"))
-    session.add(Season("Hiver", "🌨️"))
-    session.commit()
 
 
 class MealMoment(enum.Enum):

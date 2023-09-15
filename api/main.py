@@ -1,16 +1,20 @@
 from fastapi import Depends, FastAPI
+from loguru import logger
 from sqlalchemy.orm import Session
 from typing import List
 
-import dish
 import schemas
+import dish
 import season
 import week
+import data
 
 from database import SessionLocal, engine, Base
 
-
+logger.info("Creating tables")
 Base.metadata.create_all(bind=engine)
+
+logger.info(f"Created tables : {Base.metadata.tables.keys()}")
 
 
 app = FastAPI()
