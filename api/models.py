@@ -2,7 +2,17 @@ import datetime
 import enum
 
 from typing import List
-from sqlalchemy import String, Enum, Integer, Date, Table, ForeignKey, Column, Boolean
+from sqlalchemy import (
+    String,
+    Enum,
+    Integer,
+    Date,
+    Table,
+    ForeignKey,
+    Column,
+    Boolean,
+    ForeignKeyConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
 
 
@@ -41,9 +51,19 @@ class MealMoment(enum.Enum):
 
 class Meal(Base):
     __tablename__ = "meals"
-
-    id: Mapped[int] = mapped_column(init=False, primary_key=True)
-    type = mapped_column(Enum(MealMoment))
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["year", "week_number", "day_number"],
+            ["day.year", "day.week_number", "day.number"],
+        ),
+    )
+    type: Mapped[MealMoment] = mapped_column(Enum(MealMoment), primary_key=True)
+    year = Column(Integer, nullable=False, primary_key=True)
+    week_number = Column(Integer, nullable=False, primary_key=True)
+    day_number = Column(Integer, nullable=False, primary_key=True)
+    day: Mapped["Day"] = relationship(
+        foreign_keys=[year, week_number, day_number], back_populates="meals"
+    )
 
 
 class Dish(Base):
@@ -61,29 +81,35 @@ class Dish(Base):
         return f"Dish(name={self.name})"
 
 
-class Day(Base):
-    __tablename__ = "days"
-
-    number: Mapped[int] = mapped_column(Integer)
-    name: Mapped[str] = mapped_column(String(8))
-    date: Mapped[datetime.date] = mapped_column(Date, primary_key=True)
-    meals: Mapped[List["Meal"]] = relationship()
-    meal_id: Mapped[int] = mapped_column(ForeignKey("meals.id"))
-    week_id: Mapped[int] = mapped_column(ForeignKey("weeks.id"))
-
-
 class WeekStatus(enum.Enum):
     DRAFT = 0
     SAVED = 1
 
 
 class Week(Base):
-    __tablename__ = "weeks"
+    __tablename__ = "week"
 
-    id: Mapped[int] = mapped_column(init=False, primary_key=True)
     year: Mapped[int] = mapped_column(Integer, primary_key=True)
     number: Mapped[int] = mapped_column(Integer, primary_key=True)
     days: Mapped[List["Day"]] = relationship()
     status: Mapped[WeekStatus] = mapped_column(
         Enum(WeekStatus), default=WeekStatus.DRAFT
     )
+
+
+class Day(Base):
+    __tablename__ = "day"
+    __table_args__ = (
+        ForeignKeyConstraint(["week_number", "year"], ["week.number", "week.year"]),
+    )
+    number: Mapped[int] = mapped_column(Integer)
+    name: Mapped[str] = mapped_column(String(8))
+    date: Mapped[datetime.date] = mapped_column(Date, primary_key=True)
+
+    week_number = Column(Integer, nullable=False)
+    year = Column(Integer, nullable=False)
+    week: Mapped["Week"] = relationship(
+        foreign_keys=[week_number, year], back_populates="days"
+    )
+
+    meals: Mapped[List["Meal"]] = relationship()

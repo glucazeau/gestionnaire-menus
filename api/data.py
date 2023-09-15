@@ -2,6 +2,7 @@ from loguru import logger
 from sqlalchemy.event import listens_for
 from sqlalchemy.orm import Session
 
+from database import Base
 from models import Season, Dish, seasons_dishes
 from schemas import CreateDish
 from dish import create_dish
@@ -9,10 +10,8 @@ from dish import create_dish
 __all__ = ["init_seasons", "init_dishes"]
 
 
-@listens_for(Season.__table__, "after_create")
-def init_seasons(target, connection, **kwargs):
+def init_seasons(session):
     logger.info("Initializing seasons")
-    session = Session(bind=connection)
     session.add(Season("Printemps", "🌱"))
     session.add(Season("Été", "☀"))
     session.add(Season("Automne", "🍂"))
@@ -20,10 +19,8 @@ def init_seasons(target, connection, **kwargs):
     session.commit()
 
 
-@listens_for(seasons_dishes, "after_create")
-def init_dishes(target, connection, **kwargs):
+def init_dishes(session):
     logger.info("Initializing dishes")
-    session = Session(bind=connection)
     create_dish(
         session, CreateDish(name="Sushis", from_restaurant=True, seasons=[1, 2, 3, 4])
     )

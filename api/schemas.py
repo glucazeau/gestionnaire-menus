@@ -1,11 +1,20 @@
+import datetime
+
 from pydantic import BaseModel
 from typing import List, Optional
+
+
+class Day(BaseModel):
+    number: int
+    name: str
+    date: datetime.datetime
 
 
 class Week(BaseModel):
     year: int
     number: int
-    is_current: bool
+    is_current: bool = False
+    days: List[Day]
 
 
 class SeasonDish(BaseModel):
