@@ -12,6 +12,10 @@ def get_current_week_number():
     return datetime.date(now.year, now.month, now.day).isocalendar()[1]
 
 
+def is_current(number):
+    return number == get_current_week_number()
+
+
 def get_next_week_number():
     pass
 
@@ -28,7 +32,7 @@ def get_days(year, week):
         "samedi": 6,
         "dimanche": 7,
     }.items():
-        days.append((number, name, monday + datetime.timedelta(days=number)))
+        days.append((number, name, monday + datetime.timedelta(days=number - 1)))
     return days
 
 

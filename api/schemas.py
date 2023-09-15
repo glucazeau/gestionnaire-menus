@@ -1,7 +1,9 @@
 import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
 from typing import List, Optional
+
+from week import is_current
 
 
 class Day(BaseModel):
@@ -13,8 +15,12 @@ class Day(BaseModel):
 class Week(BaseModel):
     year: int
     number: int
-    is_current: bool = False
     days: List[Day]
+
+    @computed_field
+    @property
+    def is_current(self) -> bool:
+        return is_current(self.number)
 
 
 class SeasonDish(BaseModel):
