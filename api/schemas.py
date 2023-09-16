@@ -3,7 +3,7 @@ import datetime
 from pydantic import BaseModel, computed_field, field_serializer
 from typing import List, Optional
 
-from week import is_current, MealMoment, WeekStatus
+from week import is_current, MealMoment, WeekStatus, get_current_week_number
 
 
 class Meal(BaseModel):
@@ -35,6 +35,14 @@ class Week(BaseModel):
     @property
     def is_current(self) -> bool:
         return is_current(self.number)
+
+    @computed_field
+    @property
+    def is_finished(self) -> bool:
+        return (
+            self.number < get_current_week_number()
+            and self.year <= datetime.date.today().year
+        )
 
     @field_serializer("status")
     def serialize_status(self, status: WeekStatus, _info):
