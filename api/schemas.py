@@ -24,6 +24,11 @@ class Day(BaseModel):
     def serialize_date(self, date: datetime.datetime, _info):
         return date.strftime("%d/%m")
 
+    @computed_field
+    @property
+    def is_today(self) -> bool:
+        return self.date.date() == datetime.datetime.today().date()
+
 
 class Week(BaseModel):
     year: int
