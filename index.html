@@ -53,7 +53,7 @@
                           <tbody>
                             <template x-for="day in week.days.sort((a, b) => a.number < b.number)" :key="day.number">
                               <template x-for="meal in day.meals" :key="meal.type">
-                              <tr>
+                              <tr :class="{ 'table-success': day.is_today }" >
                                   <th scope="row" x-text="day.name + ' ' + day.date + getMealTypeLabel(day.meals, meal)"></th>
                                   <td>Pizza 🍕 💸</td>
                               </tr>
