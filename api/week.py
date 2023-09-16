@@ -65,7 +65,6 @@ def get_week(db: Session, year, week_number) -> Week:
             db.commit()
             db.refresh(day)
 
-            meals = []
             if day.number in [3, 6, 7]:
                 db.add(Meal(type=MealMoment.Midi, day=day))
             db.add(Meal(type=MealMoment.Soir, day=day))
@@ -76,4 +75,4 @@ def get_week(db: Session, year, week_number) -> Week:
 
 
 def list_weeks(db: Session):
-    return db.query(Week).all()
+    return db.query(Week).order_by(Week.year.asc(), Week.number.asc()).all()
