@@ -66,5 +66,13 @@ def init_dishes(session):
             name="Boulettes d'agneau, ratatouille et semoule", seasons=[1, 2, 3, 4]
         ),
     )
-    create_dish(session, CreateDish(name="Taboulé", seasons=[1, 2]))
+    create_dish(session, CreateDish(name="Taboulé", seasons=[1, 2])),
+    create_dish(
+        session,
+        CreateDish(name="Parmigianna (aubergines)", seasons=[1, 2], vegetarian=True),
+    )
+    create_dish(
+        session,
+        CreateDish(name="Burgers", seasons=[1, 2]),
+    )
     session.commit()
