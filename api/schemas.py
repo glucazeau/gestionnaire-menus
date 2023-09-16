@@ -1,16 +1,18 @@
 import datetime
 
-from pydantic import BaseModel, computed_field, field_serializer, FieldSerializationInfo
-from typing import List, Optional, Any
+from pydantic import BaseModel, computed_field, field_serializer
+from typing import List, Optional
 
-from week import is_current, MealMoment
+from week import is_current, MealMoment, WeekStatus
+
 
 class Meal(BaseModel):
     type: MealMoment
 
     @field_serializer("type")
-    def serialize_date(self, type: MealMoment, _info):
-        return MealMoment(type).name
+    def serialize_type(self, meal_type: MealMoment, _info):
+        return MealMoment(meal_type).name
+
 
 class Day(BaseModel):
     number: int
@@ -27,11 +29,16 @@ class Week(BaseModel):
     year: int
     number: int
     days: List[Day]
+    status: WeekStatus
 
     @computed_field
     @property
     def is_current(self) -> bool:
         return is_current(self.number)
+
+    @field_serializer("status")
+    def serialize_status(self, status: WeekStatus, _info):
+        return WeekStatus(status).name
 
 
 class SeasonDish(BaseModel):
