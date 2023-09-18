@@ -3,7 +3,8 @@ import datetime
 from pydantic import BaseModel, computed_field, field_serializer
 from typing import List, Optional
 
-from week import is_current, MealMoment, WeekStatus, get_current_week_number
+from constants import MealMoment, WeekStatus
+from utils import is_current, get_current_week_number
 
 
 class Meal(BaseModel):

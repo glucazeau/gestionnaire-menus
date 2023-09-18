@@ -1,5 +1,4 @@
 import datetime
-import enum
 
 from typing import List
 from sqlalchemy import (
@@ -15,7 +14,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
 
-
+from constants import MealMoment, WeekStatus
 from database import Base
 
 
@@ -42,11 +41,6 @@ class Season(Base):
 
     def __repr__(self):
         return f"Season(name={self.name})"
-
-
-class MealMoment(enum.Enum):
-    Midi = 0
-    Soir = 1
 
 
 class Meal(Base):
@@ -79,11 +73,6 @@ class Dish(Base):
 
     def __repr__(self):
         return f"Dish(name={self.name})"
-
-
-class WeekStatus(enum.Enum):
-    DRAFT = 0
-    SAVED = 1
 
 
 class Week(Base):

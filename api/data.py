@@ -1,8 +1,5 @@
 from loguru import logger
-from sqlalchemy.event import listens_for
-from sqlalchemy.orm import Session
 
-from database import Base
 from models import Season, Dish, seasons_dishes
 from schemas import CreateDish
 from dish import create_dish
