@@ -61,18 +61,6 @@
                   return ''
               }
            },
-
-           getDishLabel(dish) {
-              dishLabel = dish.name;
-              if (dish.from_restaurant) {
-                dishLabel += '&nbsp;💸';
-              }
-
-              if (dish.is_vegetarian) {
-                dishLabel += '&nbsp;🌱';
-              }
-              return dishLabel;
-           },
         }">
         <div class="container-fluid">
           <div class="row" x-init="getWeeks()">
@@ -87,8 +75,12 @@
                             <template x-for="day in week.days.sort((a, b) => a.number < b.number)" :key="day.number">
                               <template x-for="meal in day.meals" :key="meal.type">
                               <tr :class="{ 'table-success': day.is_today }" >
-                                  <th scope="row" x-text="day.name + ' ' + day.date + getMealTypeLabel(day.meals, meal)"></th>
-                                  <td x-text="getDishLabel(meal.dish)"></td>
+                                  <th scope="row" x-text="day.name + ' ' + getMealTypeLabel(day.meals, meal)"></th>
+                                  <td x-text="meal.dish.name"></td>
+                                  <td x-show="meal.dish.is_vegetarian || meal.dish.from_restaurant">
+                                    <span x-show="meal.dish.is_vegetarian == true">🌱</span>
+                                    <span x-show="meal.dish.from_restaurant">💸</span>
+                                  <td>
                               </tr>
                               </template>
                             </template>
