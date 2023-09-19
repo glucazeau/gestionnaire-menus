@@ -7,8 +7,42 @@ from constants import MealMoment, WeekStatus
 from utils import is_current, get_current_week_number
 
 
+class MealDish(BaseModel):
+    name: str
+    from_restaurant: bool
+    is_vegetarian: bool
+
+
+class SeasonDish(BaseModel):
+    name: str
+
+
+class Season(BaseModel):
+    name: str
+    icon: str
+    dishes: List[SeasonDish]
+
+
+class Dish(BaseModel):
+    name: str
+    from_restaurant: bool
+    is_vegetarian: bool
+    seasons: List[Season]
+
+
+class CreateDish(BaseModel):
+    name: str
+    from_restaurant: Optional[bool] = None
+    vegetarian: Optional[bool] = None
+    seasons: List[int]
+
+    class Config:
+        from_attributes = True
+
+
 class Meal(BaseModel):
     type: MealMoment
+    dish: MealDish
 
     @field_serializer("type")
     def serialize_type(self, meal_type: MealMoment, _info):
@@ -53,30 +87,3 @@ class Week(BaseModel):
     @field_serializer("status")
     def serialize_status(self, status: WeekStatus, _info):
         return WeekStatus(status).name
-
-
-class SeasonDish(BaseModel):
-    name: str
-
-
-class Season(BaseModel):
-    name: str
-    icon: str
-    dishes: List[SeasonDish]
-
-
-class Dish(BaseModel):
-    name: str
-    from_restaurant: bool
-    is_vegetarian: bool
-    seasons: List[Season]
-
-
-class CreateDish(BaseModel):
-    name: str
-    from_restaurant: Optional[bool] = None
-    vegetarian: Optional[bool] = None
-    seasons: List[int]
-
-    class Config:
-        from_attributes = True

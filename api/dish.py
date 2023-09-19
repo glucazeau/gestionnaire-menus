@@ -6,7 +6,8 @@ import schemas
 
 
 def list_dishes(db: Session):
-    return db.query(models.Dish)
+    dishes = db.query(models.Dish).all()
+    return dishes
 
 
 def create_dish(db: Session, dish: schemas.CreateDish):

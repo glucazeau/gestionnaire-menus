@@ -50,6 +50,10 @@ class Meal(Base):
             ["year", "week_number", "day_number"],
             ["day.year", "day.week_number", "day.number"],
         ),
+        ForeignKeyConstraint(
+            ["dish_id"],
+            ["dishes.id"],
+        ),
     )
     type: Mapped[MealMoment] = mapped_column(Enum(MealMoment), primary_key=True)
     year = Column(Integer, nullable=False, primary_key=True)
@@ -58,12 +62,14 @@ class Meal(Base):
     day: Mapped["Day"] = relationship(
         foreign_keys=[year, week_number, day_number], back_populates="meals"
     )
+    dish_id = Column(Integer, nullable=True)
+    dish: Mapped["Dish"] = relationship(foreign_keys=[dish_id])
 
 
 class Dish(Base):
     __tablename__ = "dishes"
 
-    id: Mapped[int] = mapped_column(init=False, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, init=False, primary_key=True)
     name: Mapped[str] = mapped_column(String(50))
     seasons: Mapped[List[Season]] = relationship(
         back_populates="dishes", secondary="seasons_dishes"

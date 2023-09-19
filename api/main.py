@@ -58,4 +58,4 @@ async def get_weeks(db: Session = Depends(get_db)):
 
 @app.get("/week/{year}/{number}", response_model=schemas.Week)
 async def get_week(year, number, db: Session = Depends(get_db)):
-    return week.get_week(db, year, number)
+    return week.get_week_menus(db, year, number, True)

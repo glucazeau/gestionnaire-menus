@@ -41,8 +41,8 @@ def get_week(db: Session, year, week_number) -> Week:
             db.refresh(day)
 
             if day.number in [3, 6, 7]:
-                db.add(Meal(type=MealMoment.Midi, day=day))
-            db.add(Meal(type=MealMoment.Soir, day=day))
+                db.add(Meal(type=MealMoment.Midi, day=day, dish=None))
+            db.add(Meal(type=MealMoment.Soir, day=day, dish=None))
 
         db.commit()
         db.refresh(week)
@@ -51,3 +51,33 @@ def get_week(db: Session, year, week_number) -> Week:
 
 def list_weeks(db: Session):
     return db.query(Week).order_by(Week.year.asc(), Week.number.asc()).all()
+
+
+def get_week_menus(db: Session, year, week_number, generate):
+    logger.info(f"Generating menu for week {week_number}/{year}")
+    week = get_week(db, year, week_number)
+
+    logger.debug("Listing available meals")
+    dishes = list_dishes(db)
+    logger.debug(f"{len(dishes)} meals found")
+
+    for day in week.days:
+        for meal in day.meals:
+            if can_generate(week.status, meal, generate):
+                logger.debug(f"Choosing dish for {day.name} ({meal.type})")
+                random_dish = random.choice(dishes)
+                logger.debug(f"Chosen dish is {random_dish.name}")
+                meal.dish = random_dish
+                db.add(meal)
+                dishes.remove(random_dish)
+            else:
+                logger.warning("Cannot generate menus")
+
+    db.commit()
+    db.refresh(week)
+    logger.debug(f"Menu for week {week_number}/{year} completed")
+    return week
+
+
+def can_generate(week_status, meal, generate):
+    return week_status == WeekStatus.DRAFT and (meal.dish is None or generate)
