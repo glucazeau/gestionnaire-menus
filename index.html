@@ -78,8 +78,9 @@
                                   <th scope="row" x-text="day.name + ' ' + getMealTypeLabel(day.meals, meal)"></th>
                                   <td x-text="meal.dish.name"></td>
                                   <td x-show="meal.dish.is_vegetarian || meal.dish.from_restaurant">
-                                    <span x-show="meal.dish.is_vegetarian == true">🌱</span>
+                                    <span x-show="meal.dish.is_vegetarian">🌱</span>
                                     <span x-show="meal.dish.from_restaurant">💸</span>
+                                    <span x-show="meal.dish.is_long_to_prepare">⏳</span>
                                   <td>
                               </tr>
                               </template>

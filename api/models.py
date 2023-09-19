@@ -74,8 +74,9 @@ class Dish(Base):
     seasons: Mapped[List[Season]] = relationship(
         back_populates="dishes", secondary="seasons_dishes"
     )
-    from_restaurant: Mapped[bool] = Column(Boolean, unique=False, default=False)
+    from_restaurant: Mapped[bool] = Column(Boolean, default=False)
     is_vegetarian: Mapped[bool] = Column(Boolean, default=False)
+    is_long_to_prepare: Mapped[bool] = Column(Boolean, default=False)
 
     def __repr__(self):
         return f"Dish(name={self.name})"

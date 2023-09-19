@@ -37,7 +37,10 @@ def init_dishes(session):
     create_dish(session, CreateDish(name="Pâtes carbonara", seasons=[1, 2, 3, 4]))
     create_dish(session, CreateDish(name="Spaghetti bolognaise", seasons=[1, 2, 3, 4]))
     create_dish(
-        session, CreateDish(name="Porc à la vietnamienne", seasons=[1, 2, 3, 4])
+        session,
+        CreateDish(
+            name="Porc à la vietnamienne", seasons=[1, 2, 3, 4], is_long_to_prepare=True
+        ),
     )
     create_dish(
         session, CreateDish(name="Poulet champignons / moutarde", seasons=[1, 2, 3, 4])
@@ -51,11 +54,18 @@ def init_dishes(session):
     create_dish(session, CreateDish(name="Salade de riz", seasons=[1, 2]))
     create_dish(session, CreateDish(name="Salade de pâtes", seasons=[1, 2]))
     create_dish(session, CreateDish(name="Quiche lorraine", seasons=[1, 2, 3, 4]))
-    create_dish(session, CreateDish(name="Poulet basquaise", seasons=[1, 2]))
+    create_dish(
+        session,
+        CreateDish(name="Poulet basquaise", seasons=[1, 2], is_long_to_prepare=True),
+    )
     create_dish(session, CreateDish(name="Galettes", seasons=[1, 2, 3, 4]))
     create_dish(
         session,
-        CreateDish(name="Curry patates douces, épinards et riz", seasons=[1, 3]),
+        CreateDish(
+            name="Curry patates douces, épinards et riz",
+            seasons=[1, 3],
+            is_long_to_prepare=True,
+        ),
     )
     create_dish(
         session,
@@ -66,10 +76,48 @@ def init_dishes(session):
     create_dish(session, CreateDish(name="Taboulé", seasons=[1, 2])),
     create_dish(
         session,
-        CreateDish(name="Parmigianna (aubergines)", seasons=[1, 2], vegetarian=True),
+        CreateDish(
+            name="Parmigianna (aubergines)",
+            seasons=[1, 2],
+            vegetarian=True,
+            is_long_to_prepare=True,
+        ),
     )
     create_dish(
         session,
         CreateDish(name="Burgers", seasons=[1, 2]),
+    )
+    create_dish(
+        session,
+        CreateDish(name="Tarte courgettes / feta", seasons=[2], vegetarian=True),
+    )
+    create_dish(
+        session,
+        CreateDish(name="Steak haché / purée", seasons=[1, 2, 3, 4]),
+    )
+    create_dish(
+        session,
+        CreateDish(name="Saumon et riz", seasons=[1, 2, 3, 4]),
+    )
+    create_dish(
+        session,
+        CreateDish(
+            name="Dos de cabillaud et riz",
+            seasons=[1, 2, 3, 4],
+        ),
+    )
+    create_dish(
+        session,
+        CreateDish(
+            name="Oeufs à la coque / fromage", seasons=[1, 2, 3, 4], vegetarian=True
+        ),
+    )
+    create_dish(
+        session,
+        CreateDish(name="Omelette", seasons=[1, 2, 3, 4], vegetarian=True),
+    )
+    create_dish(
+        session,
+        CreateDish(name="Rougail saucisses", seasons=[1, 2]),
     )
     session.commit()

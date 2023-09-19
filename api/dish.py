@@ -29,6 +29,7 @@ def create_dish(db: Session, dish: schemas.CreateDish):
         from_restaurant=dish.from_restaurant,
         seasons=get_seasons,
         is_vegetarian=dish.vegetarian,
+        is_long_to_prepare=dish.is_long_to_prepare,
     )
     db.add(new_dish)
     db.commit()

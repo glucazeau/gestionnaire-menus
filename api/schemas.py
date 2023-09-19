@@ -11,6 +11,7 @@ class MealDish(BaseModel):
     name: str
     from_restaurant: bool
     is_vegetarian: bool
+    is_long_to_prepare: bool
 
 
 class SeasonDish(BaseModel):
@@ -34,6 +35,7 @@ class CreateDish(BaseModel):
     name: str
     from_restaurant: Optional[bool] = None
     vegetarian: Optional[bool] = None
+    is_long_to_prepare: Optional[bool] = None
     seasons: List[int]
 
     class Config:
