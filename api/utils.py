@@ -1,5 +1,7 @@
 import datetime
 
+from typing import Tuple
+
 
 def get_current_week_number():
     now = datetime.datetime.now()
@@ -8,6 +10,15 @@ def get_current_week_number():
 
 def is_current(number):
     return number == get_current_week_number()
+
+
+def get_previous_week_number(year, week_number) -> Tuple[int, int]:
+    previous_week_year = year
+    previous_week_number = week_number - 1
+    if previous_week_number < 1:
+        previous_week_number = 52
+        previous_week_year = year - 1
+    return previous_week_year, previous_week_number
 
 
 def get_next_week_number():
