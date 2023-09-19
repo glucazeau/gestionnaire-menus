@@ -39,7 +39,19 @@
               } else {
                   return ''
               }
-           }
+           },
+
+           getDishLabel(dish) {
+              dishLabel = dish.name;
+              if (dish.from_restaurant) {
+                dishLabel += '&nbsp;💸';
+              }
+
+              if (dish.is_vegetarian) {
+                dishLabel += '&nbsp;🌱';
+              }
+              return dishLabel;
+           },
         }">
         <div class="container">
           <div class="row" x-init="getWeeks()">
@@ -55,7 +67,7 @@
                               <template x-for="meal in day.meals" :key="meal.type">
                               <tr :class="{ 'table-success': day.is_today }" >
                                   <th scope="row" x-text="day.name + ' ' + day.date + getMealTypeLabel(day.meals, meal)"></th>
-                                  <td>Pizza 🍕 💸</td>
+                                  <td x-text="getDishLabel(meal.dish)"></td>
                               </tr>
                               </template>
                             </template>
