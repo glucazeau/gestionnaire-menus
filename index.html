@@ -46,6 +46,14 @@
                 });
             },
 
+            getWeekLabel(week) {
+              weekLabel = 'Semaine ' + week.number
+              if (week.is_finished) {
+                weekLabel += '&nbsp;✔️'
+              }
+              return weekLabel
+            },
+
            getMealTypeLabel(meals, meal) {
               if (meals.length > 1) {
                   return '&nbsp;(' + meal.type +')'
@@ -72,7 +80,7 @@
             <div class="col-md-4">
               <div class="card mb-4 box-shadow" :class="{ 'border-success': week.is_current }">
                 <div class="card-body">
-                    <h5 class="card-title" x-text="'Semaine ' + week.number"></h5>
+                    <h5 class="card-title" x-text="getWeekLabel(week)"></h5>
                     <p class="card-text">
                         <table class="table">
                           <tbody>
