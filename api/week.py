@@ -6,18 +6,22 @@ from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 from constants import MealMoment, WeekStatus
-from utils import get_days
+from utils import get_days, get_previous_week_number
 from models import Week, Day, Meal
 from dish import list_dishes
 
 
 def get_week(db: Session, year, week_number) -> Week:
     logger.info(f"Retrieving week {week_number}/{year}")
-    week = (
+    return (
         db.query(Week)
         .filter(and_(Week.year == year, Week.number == week_number))
         .first()
     )
+
+
+def init_week(db: Session, year, week_number) -> Week:
+    week = get_week(db, year, week_number)
     if week is None:
         logger.info(f"Initializing week {week_number}/{year}")
         week = Week(year=year, number=week_number, days=[], status=WeekStatus.DRAFT)
@@ -53,18 +57,31 @@ def list_weeks(db: Session):
     return db.query(Week).order_by(Week.year.asc(), Week.number.asc()).all()
 
 
+def get_previous_week_dishes(db: Session, week: Week):
+    year, number = get_previous_week_number(week.year, week.number)
+    previous_week = get_week(db, year, number)
+
+    if previous_week is None:
+        return []
+    else:
+        return [meal.dish for day in previous_week.days for meal in day.meals]
+
+
 def get_week_menus(db: Session, year, week_number, generate):
     logger.info(f"Generating menu for week {week_number}/{year}")
-    week = get_week(db, year, week_number)
+    week = init_week(db, year, week_number)
 
-    logger.debug("Listing available meals")
-    dishes = list_dishes(db)
+    logger.info("Listing previous week dishes")
+    previous_week_dishes = get_previous_week_dishes(db, week)
+
+    logger.debug("Listing available dishes")
+    dishes = list_dishes(db, previous_week_dishes)
     logger.debug(f"{len(dishes)} meals found")
 
     for day in week.days:
         for meal in day.meals:
             if can_generate(week.status, meal, generate):
-                logger.debug(f"Choosing dish for {day.name} ({meal.type})")
+                logger.debug(f"Choosing dish for {day.name} ({meal.type.name})")
                 random_dish = random.choice(dishes)
                 logger.debug(f"Chosen dish is {random_dish.name}")
                 meal.dish = random_dish
@@ -79,5 +96,6 @@ def get_week_menus(db: Session, year, week_number, generate):
     return week
 
 
-def can_generate(week_status, meal, generate):
+def can_generate(week_status: WeekStatus, meal: Meal, generate: bool):
+    logger.debug(f"{week_status} - {meal.dish} - {generate}")
     return week_status == WeekStatus.DRAFT and (meal.dish is None or generate)

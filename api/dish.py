@@ -1,12 +1,19 @@
-from sqlalchemy.orm import Session
 from loguru import logger
+from typing import List
+from sqlalchemy.orm import Session
 
 import models
 import schemas
 
 
-def list_dishes(db: Session):
-    dishes = db.query(models.Dish).all()
+def list_dishes(db: Session, exclude_dishes: List[models.Dish] = None):
+    if exclude_dishes is None:
+        exclude_dish_ids = []
+    else:
+        exclude_dish_ids = [dish.id for dish in exclude_dishes]
+        logger.debug(f"Excluding dish IDs {exclude_dish_ids}")
+
+    dishes = db.query(models.Dish).where(models.Dish.id.not_in(exclude_dish_ids)).all()
     return dishes
 
 
