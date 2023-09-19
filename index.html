@@ -33,6 +33,11 @@
                 .then((json) => this.weeks = json);
             },
 
+            generateWeek(year, number) {
+              fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
+                .then((response) => response.json())
+            },
+
            getMealTypeLabel(meals, meal) {
               if (meals.length > 1) {
                   return '&nbsp;(' + meal.type +')'
@@ -77,7 +82,7 @@
                     <p class="card-text">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group" x-show="week.status == 'DRAFT' && !week.is_finished">
-                              <button type="button" class="btn btn-sm btn-outline-secondary"><span class="bi-arrow-clockwise"> Regénérer</button>
+                              <button type="button" class="btn btn-sm btn-outline-secondary" x-on:click="generateWeek(week.year, week.number)"><span class="bi-arrow-clockwise"> Regénérer</button>
                               <button type="button" class="btn btn-sm btn-outline-success"><span class="bi-check-lg"> Enregistrer</button>
                             </div>
                         </div>
