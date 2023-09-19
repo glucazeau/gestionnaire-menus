@@ -33,9 +33,17 @@
                 .then((json) => this.weeks = json);
             },
 
-            generateWeek(year, number) {
-              fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
+            async generateWeek(year, number) {
+              var week = await fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
                 .then((response) => response.json())
+                .then((json) =>  {
+                  for (let i = 0; i < this.weeks.length; i++) { 
+                    const current_week = this.weeks[i];
+                    if (current_week.year == year && current_week.number == number) {
+                      this.weeks[i] = json;
+                    }
+                  }
+                });
             },
 
            getMealTypeLabel(meals, meal) {
@@ -58,7 +66,7 @@
               return dishLabel;
            },
         }">
-        <div class="container">
+        <div class="container-fluid">
           <div class="row" x-init="getWeeks()">
             <template x-for="week in weeks" :key="week.number">
             <div class="col-md-4">
