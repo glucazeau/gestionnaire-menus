@@ -70,7 +70,7 @@ class Dish(Base):
     __tablename__ = "dishes"
 
     id: Mapped[int] = mapped_column(Integer, init=False, primary_key=True)
-    name: Mapped[str] = mapped_column(String(50))
+    name: Mapped[str] = mapped_column(String(50), unique=True)
     seasons: Mapped[List[Season]] = relationship(
         back_populates="dishes", secondary="seasons_dishes"
     )
