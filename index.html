@@ -55,8 +55,8 @@
             },
 
            getMealTypeLabel(meals, meal) {
-              if (meals.length > 1) {
-                  return '&nbsp;(' + meal.type +')'
+              if (meals.length > 1 && meal.type == 'Soir') {
+                  return '&nbsp;🌜'
               } else {
                   return ''
               }
@@ -75,13 +75,13 @@
                             <template x-for="day in week.days.sort((a, b) => a.number < b.number)" :key="day.number">
                               <template x-for="meal in day.meals" :key="meal.type">
                               <tr :class="{ 'table-success': day.is_today }" >
-                                  <th scope="row" x-text="day.name + ' ' + getMealTypeLabel(day.meals, meal)"></th>
+                                  <th scope="row" x-text="day.name + ' ' + getMealTypeLabel(day.meals, meal)" class="w-auto"></th>
                                   <td x-text="meal.dish.name"></td>
-                                  <td x-show="meal.dish.is_vegetarian || meal.dish.from_restaurant">
+                                  <td class="w-auto">
                                     <span x-show="meal.dish.is_vegetarian">🌱</span>
                                     <span x-show="meal.dish.from_restaurant">💸</span>
                                     <span x-show="meal.dish.is_long_to_prepare">⏳</span>
-                                  <td>
+                                  </td>
                               </tr>
                               </template>
                             </template>
