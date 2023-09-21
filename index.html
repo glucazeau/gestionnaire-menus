@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Menus - générateur</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+     <!-- Bootstrap Font Icon CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body>
+    <main role="main">
+
+  <section class="py-1 text-center container">
+    <div class="row py-lg-1">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light">☀️ mardi 5 septembre 2023 ☀️</h1>
+      </div>
+    </div>
+  </section>
+      <div class="album py-3 bg-light" x-data="{
+            baseUrl: 'http://localhost:8000',
+            weeks: [],
+
+            getWeeks() {
+              fetch(this.baseUrl + '/week')
+                .then((response) => response.json())
+                .then((json) => this.weeks = json);
+            },
+
+            async generateWeek(year, number) {
+              var week = await fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
+                .then((response) => response.json())
+                .then((json) =>  {
+                  for (let i = 0; i < this.weeks.length; i++) { 
+                    const current_week = this.weeks[i];
+                    if (current_week.year == year && current_week.number == number) {
+                      this.weeks[i] = json;
+                    }
+                  }
+                });
+            },
+
+            getWeekLabel(week) {
+              weekLabel = 'Semaine ' + week.number
+              if (week.is_finished) {
+                weekLabel += '&nbsp;✔️'
+              }
+              return weekLabel
+            },
+
+           getMealTypeLabel(meals, meal) {
+              if (meals.length > 1 && meal.type == 'Soir') {
+                  return '&nbsp;🌜'
+              } else {
+                  return ''
+              }
+           },
+        }">
+        <div class="container-fluid">
+          <div class="row" x-init="getWeeks()">
+            <template x-for="week in weeks" :key="week.number">
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow" :class="{ 'border-success': week.is_current }">
+                <div class="card-body">
+                    <h5 class="card-title" x-text="getWeekLabel(week)"></h5>
+                    <p class="card-text">
+                        <table class="table">
+                          <tbody>
+                            <template x-for="day in week.days.sort((a, b) => a.number < b.number)" :key="day.number">
+                              <template x-for="meal in day.meals" :key="meal.type">
+                              <tr :class="{ 'table-success': day.is_today }" >
+                                  <th scope="row" x-text="day.name + ' ' + getMealTypeLabel(day.meals, meal)" class="w-auto"></th>
+                                  <td x-text="meal.dish.name"></td>
+                                  <td class="w-auto">
+                                    <span x-show="meal.dish.is_vegetarian">🌱</span>
+                                    <span x-show="meal.dish.from_restaurant">💸</span>
+                                    <span x-show="meal.dish.is_long_to_prepare">⏳</span>
+                                  </td>
+                              </tr>
+                              </template>
+                            </template>
+                          </tbody>
+                        </table>
+                    </p>
+                    <p class="card-text">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group" x-show="week.status == 'DRAFT' && !week.is_finished">
+                              <button type="button" class="btn btn-sm btn-outline-secondary" x-on:click="generateWeek(week.year, week.number)"><span class="bi-arrow-clockwise"> Regénérer</button>
+                              <button type="button" class="btn btn-sm btn-outline-success"><span class="bi-check-lg"> Enregistrer</button>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+              </div>
+            </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
