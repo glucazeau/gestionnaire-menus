@@ -109,3 +109,6 @@ class Day(Base):
     )
 
     meals: Mapped[List["Meal"]] = relationship()
+
+    def is_weekend(self):
+        return self.number in (6, 7)
