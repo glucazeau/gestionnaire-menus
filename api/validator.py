@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from models import Day, Week, Dish
+from models import Day, Week, Dish, Meal, MealMoment
 from dataclasses import dataclass
 
 
@@ -14,6 +14,7 @@ class Rule(ABC):
     def valid(
         self,
         dish: Dish,
+        meal: Meal,
         day: Day,
         week: Week,
     ):
@@ -23,16 +24,28 @@ class Rule(ABC):
 class NoLongDishOnWeekDay(Rule):
     name = "No long dish on week day"
 
-    def valid(self, dish: Dish, day: Day, week: Week) -> bool:
+    def valid(self, dish: Dish, meal: Meal, day: Day, week: Week) -> bool:
         return not dish.is_long_to_prepare or day.is_weekend()
 
 
-rules = [NoLongDishOnWeekDay()]
+class PaidDishOnlyOnWeekendNights(Rule):
+    name = "Paid dishes are for Friday or weekend nights"
+
+    def valid(self, dish: Dish, meal: Meal, day: Day, week: Week) -> bool:
+        return not dish.from_restaurant or (
+            (day.number == 5 or day.is_weekend()) and meal.type is MealMoment.Soir
+        )
 
 
-def validate_dish(dish: Dish, day: Day, week: Week) -> (bool, str):
+rules = [NoLongDishOnWeekDay(), PaidDishOnlyOnWeekendNights()]
+
+
+def validate_dish(dish: Dish, meal: Meal, day: Day, week: Week) -> (bool, str):
+    logger.debug(f"Validating {dish}")
     for rule in rules:
-        result = rule.valid(dish, day, week)
+        result = rule.valid(dish, meal, day, week)
+        logger.debug(f"  with rule {rule.name}: {result}")
         if not result:
             return False, rule.name
+    logger.debug("Dish is valid")
     return True, "OK"
