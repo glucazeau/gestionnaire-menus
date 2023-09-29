@@ -47,7 +47,7 @@ def pick_dish(
     available_dishes = dishes
     while True:
         random_dish = random.choice(dishes)
-        result, rule = validate_dish(random_dish, meal, day, week)
+        result = validate_dish(random_dish, meal, day, week)
         if result:
             return random_dish
         else:

@@ -48,6 +48,6 @@ def validate_dish(dish: Dish, meal: Meal, day: Day, week: Week) -> (bool, str):
         result = rule.valid(dish, meal, day, week)
         logger.debug(f"  with rule {rule.name}: {result}")
         if not result:
-            return False, rule.name
+            return False
     logger.debug("Dish is valid")
-    return True, "OK"
+    return True

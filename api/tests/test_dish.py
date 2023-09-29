@@ -9,10 +9,7 @@ p = pytest.param
 
 
 def validate_dish_mock_return(dish, meal, day, week):
-    if dish.id == 3:
-        return True, "OK"
-    else:
-        return False, "KO"
+    return True if dish.id == 3 else False
 
 
 def test_pick_dish__first_valid_dish_is_returned():
