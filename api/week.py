@@ -5,6 +5,7 @@ from loguru import logger
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
+import dish
 from constants import MealMoment, WeekStatus
 from utils import get_days, get_previous_week_number
 from models import Week, Day, Meal
@@ -82,17 +83,17 @@ def get_week_menus(db: Session, year, week_number, generate):
         for meal in day.meals:
             if can_generate(week.status, meal, generate):
                 logger.debug(f"Choosing dish for {day.name} ({meal.type.name})")
-                random_dish = random.choice(dishes)
-                logger.debug(f"Chosen dish is {random_dish.name}")
-                meal.dish = random_dish
+                chosen_dish = dish.pick_dish(week, day, meal, dishes)
+                logger.debug(f"Chosen dish is {chosen_dish.name}")
+                meal.dish = chosen_dish
                 db.add(meal)
-                dishes.remove(random_dish)
+                dishes.remove(chosen_dish)
             else:
                 logger.warning("Cannot generate menus")
 
     db.commit()
     db.refresh(week)
-    logger.debug(f"Menu for week {week_number}/{year} completed")
+    logger.info(f"Menu for week {week_number}/{year} completed")
     return week
 
 

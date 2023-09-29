@@ -1,9 +1,13 @@
+import random
+
 from loguru import logger
 from typing import List
 from sqlalchemy.orm import Session
 
 import models
 import schemas
+
+from validator import validate_dish
 
 
 def list_dishes(db: Session, exclude_dishes: List[models.Dish] = None):
@@ -35,3 +39,16 @@ def create_dish(db: Session, dish: schemas.CreateDish):
     db.commit()
     db.refresh(new_dish)
     return new_dish
+
+
+def pick_dish(
+    week: models.Week, day: models.Day, meal: models.Meal, dishes: List[models.Dish]
+) -> models.Dish:
+    available_dishes = dishes
+    while True:
+        random_dish = random.choice(dishes)
+        result = validate_dish(random_dish, meal, day, week)
+        if result:
+            return random_dish
+        else:
+            available_dishes.remove(random_dish)
