@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
-from models import Day, Week, Dish, Meal, MealMoment
 from dataclasses import dataclass
+from loguru import logger
+
+from models import Day, Week, Dish, Meal, MealMoment
 
 
 @dataclass
