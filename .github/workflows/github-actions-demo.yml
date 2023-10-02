@@ -39,6 +39,7 @@ jobs:
         python -m pytest -v --cov=. --cov-report=xml:coverage-reports/coverage.xml --cov-report term tests/ 
     - run: ls -l ${{ github.workspace }}/${{ env.PROJECT_PATH }}
     - run: ls -l ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api
+    - run: cat ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api/coverage-reports/coverage.xml
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2.0.2
