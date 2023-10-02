@@ -41,6 +41,8 @@ jobs:
     - run: ls -l ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api
     - run: cat ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api/coverage-reports/coverage.xml
 
+    - run: sed -i 's/<source>.<\/source>/<source>api<\/source>/g' ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api/coverage-reports/coverage.xml
+    
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v2.0.2
       env:
