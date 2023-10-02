@@ -42,5 +42,8 @@ jobs:
           -Dsonar.tests=api/tests/
       with:
         args: >
+          -Dsonar.projectKey=glucazeau_gestionnaire-menus
+          -Dsonar.organization=glucazeau
+          -Dsonar.tests=api/tests/
           -Dsonar.python.coverage.reportPaths=${{ github.workspace }}/${{ env.PROJECT_PATH }}/api/coverage-reports/coverage.xml
     - run: echo "🍏 This job's status is ${{ job.status }}."
