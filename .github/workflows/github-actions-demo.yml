@@ -43,7 +43,7 @@ jobs:
 
     - run: sed -i 's/<source>.<\/source>/<source>api<\/source>/g' ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api/coverage-reports/coverage.xml
 
-    
+
     - run: cat ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api/coverage-reports/coverage.xml
 
     - name: SonarCloud Scan
@@ -56,5 +56,5 @@ jobs:
           -Dsonar.projectKey=glucazeau_gestionnaire-menus
           -Dsonar.organization=glucazeau
           -Dsonar.tests=api/tests/
-          -Dsonar.python.coverage.reportPaths=${{ github.workspace }}/${{ env.PROJECT_PATH }}/api/coverage-reports/coverage.xml
+          -Dsonar.python.coverage.reportPaths=api/coverage-reports/coverage.xml
     - run: echo "🍏 This job's status is ${{ job.status }}."
