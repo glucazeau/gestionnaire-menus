@@ -50,8 +50,6 @@ jobs:
         args: >
           -Dsonar.projectKey=glucazeau_gestionnaire-menus
           -Dsonar.organization=glucazeau
-          -Dsonar.sources=api,front
           -Dsonar.tests=api/tests/
-          -Dsonar.exclusions=**/api/tests/**
           -Dsonar.python.coverage.reportPaths=api/coverage-reports/coverage.xml
     - run: echo "🍏 This job's status is ${{ job.status }}."
