@@ -39,7 +39,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          -Dsonar.tests=api/tests/
       with:
         args: >
           -Dsonar.projectKey=glucazeau_gestionnaire-menus
