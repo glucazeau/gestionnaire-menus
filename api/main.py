@@ -72,3 +72,12 @@ async def get_weeks(db: Session = Depends(get_db)):
 @app.get("/week/{year}/{number}", response_model=schemas.Week)
 async def get_week(year, number, db: Session = Depends(get_db), generate: bool = False):
     return week.get_week_menus(db, year, number, generate)
+
+
+@app.post("/week/{year}/{number}", response_model=schemas.Week)
+async def change_week_status(
+    year, number, action: schemas.WeekAction, db: Session = Depends(get_db)
+):
+    status = week.WeekStatus.SAVED if action.action == "save" else week.WeekStatus.DRAFT
+    week.set_week_status(db, year, number, status)
+    return week.get_week_menus(db, year, number)

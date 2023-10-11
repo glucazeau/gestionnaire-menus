@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Menus - générateur</title>
-    <link rel="stylesheet" href="styles.css">
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
     <!-- Font Awesome CSS -->
@@ -33,17 +32,37 @@
                 .then((json) => this.weeks = json);
             },
 
+            setCurrentWeek(year, number, json) {
+              for (let i = 0; i < this.weeks.length; i++) {
+                const current_week = this.weeks[i];
+                if (current_week.year == year && current_week.number == number) {
+                  this.weeks[i] = json;
+                }
+              }
+            },
+
             async generateWeek(year, number) {
-              var week = await fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
+              await fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
                 .then((response) => response.json())
                 .then((json) =>  {
-                  for (let i = 0; i < this.weeks.length; i++) { 
-                    const current_week = this.weeks[i];
-                    if (current_week.year == year && current_week.number == number) {
-                      this.weeks[i] = json;
-                    }
-                  }
+                  this.setCurrentWeek(year, number, json)
                 });
+            },
+
+            async changeWeekStatus(year, number, action) {
+              await fetch(this.baseUrl + '/week/' + year + '/' + number, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  action: action,
+                })
+              })
+              .then((response) => response.json())
+              .then((json) =>  { 
+                this.setCurrentWeek(year, number, json)
+              });
             },
 
             getWeekLabel(week) {
@@ -92,7 +111,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group" x-show="week.status == 'DRAFT' && !week.is_finished">
                               <button type="button" class="btn btn-sm btn-outline-secondary" x-on:click="generateWeek(week.year, week.number)"><span class="bi-arrow-clockwise"> Regénérer</button>
-                              <button type="button" class="btn btn-sm btn-outline-success"><span class="bi-check-lg"> Enregistrer</button>
+                              <button type="button" class="btn btn-sm btn-outline-success" x-on:click="changeWeekStatus(week.year, week.number, 'save')"><span class="bi-check-lg"> Enregistrer</button>
+                            </div>
+                            <div class="btn-group" x-show="week.status == 'SAVED' && !week.is_finished">
+                              <button type="button" class="btn btn-sm btn-outline-secondary" x-on:click="changeWeekStatus(week.year, week.number, 'edit')"><span class="bi-arrow-clockwise"> Modifier</button>
                             </div>
                         </div>
                     </p>

@@ -1,7 +1,7 @@
 import datetime
 
 from pydantic import BaseModel, computed_field, field_serializer
-from typing import List, Optional
+from typing import List, Optional, Literal
 
 from constants import MealMoment, WeekStatus
 from utils import is_current, get_current_week_number
@@ -89,3 +89,7 @@ class Week(BaseModel):
     @field_serializer("status")
     def serialize_status(self, status: WeekStatus, _info):
         return WeekStatus(status).name
+
+
+class WeekAction(BaseModel):
+    action: Literal["save", "edit"]
