@@ -1,18 +1,17 @@
-import datetime
-import random
-
 from loguru import logger
-from sqlalchemy import and_
+from sqlalchemy import and_, update
 from sqlalchemy.orm import Session
+from typing import Optional, Type
 
 import dish
+
 from constants import MealMoment, WeekStatus
 from utils import get_days, get_previous_week_number
 from models import Week, Day, Meal
 from dish import list_dishes
 
 
-def get_week(db: Session, year, week_number) -> Week:
+def get_week(db: Session, year, week_number) -> Optional[Type[Week]]:
     logger.info(f"Retrieving week {week_number}/{year}")
     return (
         db.query(Week)
@@ -68,7 +67,7 @@ def get_previous_week_dishes(db: Session, week: Week):
         return [meal.dish for day in previous_week.days for meal in day.meals]
 
 
-def get_week_menus(db: Session, year, week_number, generate):
+def get_week_menus(db: Session, year, week_number, generate=False):
     logger.info(f"Generating menu for week {week_number}/{year}")
     week = init_week(db, year, week_number)
 
@@ -100,3 +99,13 @@ def get_week_menus(db: Session, year, week_number, generate):
 def can_generate(week_status: WeekStatus, meal: Meal, generate: bool):
     logger.debug(f"{week_status} - {meal.dish} - {generate}")
     return week_status == WeekStatus.DRAFT and (meal.dish is None or generate)
+
+
+def set_week_status(db: Session, year, week_number, week_status: WeekStatus):
+    logger.info(f"Setting status {week_status} on Week {year}/{week_number}")
+    db.execute(
+        update(Week)
+        .values(status=week_status)
+        .where(and_(Week.year == year, Week.number == week_number))
+    )
+    db.commit()
