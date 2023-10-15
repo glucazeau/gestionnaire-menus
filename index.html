@@ -12,17 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
-  <body>
-    <main role="main">
-
-  <section class="py-1 text-center container">
-    <div class="row py-lg-1">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">☀️ mardi 5 septembre 2023 ☀️</h1>
-      </div>
-    </div>
-  </section>
-      <div class="album py-3 bg-light" x-data="{
+  <body x-data="{
             baseUrl: 'http://localhost:8000',
             weeks: [],
 
@@ -80,7 +70,29 @@
                   return ''
               }
            },
+
+           getSeasonEmoji() {
+            getSeason = d => Math.floor((d.getMonth() / 12 * 4)) % 4;
+            return ['❄️', '🍃', '☀️', '🍂'][getSeason(new Date())];
+           },
+
+           getDateTitle() {
+              days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi' ,'vendredi', 'samedi']
+              months = ['janvier', 'février', 'mars', 'avril', 'mai' ,'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+              d = new Date();
+              return this.getSeasonEmoji() + ' ' + days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' ' + this.getSeasonEmoji()
+           },
         }">
+    <main role="main">
+
+  <section class="py-1 text-center container">
+    <div class="row py-lg-1">
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-light" x-text="getDateTitle()"></h1>
+      </div>
+    </div>
+  </section>
+      <div class="album py-3 bg-light">
         <div class="container-fluid">
           <div class="row" x-init="getWeeks()">
             <template x-for="week in weeks" :key="week.number">
