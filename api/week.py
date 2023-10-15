@@ -54,7 +54,10 @@ def init_week(db: Session, year, week_number) -> Week:
 
 
 def list_weeks(db: Session):
-    return db.query(Week).order_by(Week.year.asc(), Week.number.asc()).all()
+    results = (
+        db.query(Week).order_by(Week.year.desc(), Week.number.desc()).limit(3).all()
+    )
+    return list(reversed(results))
 
 
 def get_previous_week_dishes(db: Session, week: Week):
