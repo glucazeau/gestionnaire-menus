@@ -12,77 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
-  <body x-data="{
-            baseUrl: 'http://localhost:8000',
-            weeks: [],
-
-            getWeeks() {
-              fetch(this.baseUrl + '/week')
-                .then((response) => response.json())
-                .then((json) => this.weeks = json);
-            },
-
-            setCurrentWeek(year, number, json) {
-              for (let i = 0; i < this.weeks.length; i++) {
-                const current_week = this.weeks[i];
-                if (current_week.year == year && current_week.number == number) {
-                  this.weeks[i] = json;
-                }
-              }
-            },
-
-            async generateWeek(year, number) {
-              await fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
-                .then((response) => response.json())
-                .then((json) =>  {
-                  this.setCurrentWeek(year, number, json)
-                });
-            },
-
-            async changeWeekStatus(year, number, action) {
-              await fetch(this.baseUrl + '/week/' + year + '/' + number, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  action: action,
-                })
-              })
-              .then((response) => response.json())
-              .then((json) =>  { 
-                this.setCurrentWeek(year, number, json)
-              });
-            },
-
-            getWeekLabel(week) {
-              weekLabel = 'Semaine ' + week.number
-              if (week.is_finished) {
-                weekLabel += '&nbsp;✔️'
-              }
-              return weekLabel
-            },
-
-           getMealTypeLabel(meals, meal) {
-              if (meals.length > 1 && meal.type == 'Soir') {
-                  return '&nbsp;🌜'
-              } else {
-                  return ''
-              }
-           },
-
-           getSeasonEmoji() {
-            getSeason = d => Math.floor((d.getMonth() / 12 * 4)) % 4;
-            return ['❄️', '🍃', '☀️', '🍂'][getSeason(new Date())];
-           },
-
-           getDateTitle() {
-              days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi' ,'vendredi', 'samedi']
-              months = ['janvier', 'février', 'mars', 'avril', 'mai' ,'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
-              d = new Date();
-              return this.getSeasonEmoji() + ' ' + days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' ' + this.getSeasonEmoji()
-           },
-        }">
+  <body x-data="manageMenus()">
     <main role="main">
 
   <section class="py-1 text-center container">
@@ -141,5 +71,79 @@
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+    const manageMenus = () => ({
+        baseUrl: 'http://localhost:8000',
+        weeks: [],
+
+        getWeeks() {
+          fetch(this.baseUrl + '/week')
+            .then((response) => response.json())
+            .then((json) => this.weeks = json);
+        },
+
+        setCurrentWeek(year, number, json) {
+          for (let i = 0; i < this.weeks.length; i++) {
+            const current_week = this.weeks[i];
+            if (current_week.year == year && current_week.number == number) {
+              this.weeks[i] = json;
+            }
+          }
+        },
+
+        async generateWeek(year, number) {
+          await fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
+            .then((response) => response.json())
+            .then((json) =>  {
+              this.setCurrentWeek(year, number, json)
+            });
+        },
+
+        async changeWeekStatus(year, number, action) {
+          await fetch(this.baseUrl + '/week/' + year + '/' + number, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              action: action,
+            })
+          })
+          .then((response) => response.json())
+          .then((json) =>  { 
+            this.setCurrentWeek(year, number, json)
+          });
+        },
+
+        getWeekLabel(week) {
+          weekLabel = 'Semaine ' + week.number
+          if (week.is_finished) {
+            weekLabel += '&nbsp;✔️'
+          }
+          return weekLabel
+        },
+
+       getMealTypeLabel(meals, meal) {
+          if (meals.length > 1 && meal.type == 'Soir') {
+              return '&nbsp;🌜'
+          } else {
+              return ''
+          }
+       },
+
+       getSeasonEmoji() {
+        getSeason = d => Math.floor((d.getMonth() / 12 * 4)) % 4;
+        return ['❄️', '🍃', '☀️', '🍂'][getSeason(new Date())];
+       },
+
+       getDateTitle() {
+          days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi' ,'vendredi', 'samedi']
+          months = ['janvier', 'février', 'mars', 'avril', 'mai' ,'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+          d = new Date();
+          return this.getSeasonEmoji() + ' ' + days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' ' + this.getSeasonEmoji()
+       },
+    })
+    </script>
   </body>
 </html>
