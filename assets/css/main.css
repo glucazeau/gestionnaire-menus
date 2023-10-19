@@ -928,4 +928,13 @@ section {
   border: dashed 3px;
   border-color: var(--color-primary);;
 }
+
+.dishes .reservation-form-bg {
+  background: rgba(55, 55, 63, 0.04);
+}
+
+section#dishes {
+  overflow: hidden;
+  padding: 0px 0;
+}
 /* Fin ajouts */
