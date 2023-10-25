@@ -1,3 +1,5 @@
+import datetime
+
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
@@ -9,6 +11,8 @@ import dish
 import season
 import week
 import data
+
+from utils import get_current_week_number
 
 from database import SessionLocal, engine, Base
 
@@ -72,6 +76,12 @@ async def get_weeks(db: Session = Depends(get_db)):
 @app.get("/week/{year}/{number}", response_model=schemas.Week)
 async def get_week(year, number, db: Session = Depends(get_db), generate: bool = False):
     return week.get_week_menus(db, year, number, generate)
+
+
+@app.get("/week/current", response_model=schemas.Week)
+async def get_week(db: Session = Depends(get_db), generate: bool = False):
+    now = datetime.datetime.now()
+    return week.get_week_menus(db, now.year, get_current_week_number(), generate)
 
 
 @app.post("/week/{year}/{number}", response_model=schemas.Week)
