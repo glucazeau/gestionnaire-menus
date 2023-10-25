@@ -1,149 +1,253 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Menus - générateur</title>
-    <!-- Bootstrap 5 CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-     <!-- Bootstrap Font Icon CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  </head>
-  <body x-data="manageMenus()">
-    <main role="main">
 
-  <section class="py-1 text-center container">
-    <div class="row py-lg-1">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light" x-text="getDateTitle()"></h1>
-      </div>
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Menus de la semaine</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍕</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  
+  <!-- Template Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Yummy
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body x-data="manageMenus()">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1 >Menus de la <span>semaine</span></h1>
+      </a>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="#menus">Menus</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+
     </div>
-  </section>
-      <div class="album py-3 bg-light">
-        <div class="container-fluid">
-          <div class="row" x-init="getWeeks()">
-            <template x-for="week in weeks" :key="week.number">
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow" :class="{ 'border-success': week.is_current }">
-                <div class="card-body">
-                    <h5 class="card-title" x-text="getWeekLabel(week)"></h5>
-                    <p class="card-text">
-                        <table class="table">
-                          <tbody>
-                            <template x-for="day in week.days.sort((a, b) => a.number < b.number)" :key="day.number">
-                              <template x-for="meal in day.meals" :key="meal.type">
-                              <tr :class="{ 'table-success': day.is_today }" >
-                                  <th scope="row" x-text="day.name + ' ' + getMealTypeLabel(day.meals, meal)" class="w-auto"></th>
-                                  <td x-text="meal.dish.name"></td>
-                                  <td class="w-auto">
-                                    <span x-show="meal.dish.is_vegetarian">🌱</span>
-                                    <span x-show="meal.dish.from_restaurant">💸</span>
-                                    <span x-show="meal.dish.is_long_to_prepare">⏳</span>
-                                  </td>
-                              </tr>
-                              </template>
-                            </template>
-                          </tbody>
-                        </table>
-                    </p>
-                    <p class="card-text">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group" x-show="week.status == 'DRAFT' && !week.is_finished">
-                              <button type="button" class="btn btn-sm btn-outline-secondary" x-on:click="generateWeek(week.year, week.number)"><span class="bi-arrow-clockwise"> Regénérer</button>
-                              <button type="button" class="btn btn-sm btn-outline-success" x-on:click="changeWeekStatus(week.year, week.number, 'save')"><span class="bi-check-lg"> Enregistrer</button>
-                            </div>
-                            <div class="btn-group" x-show="week.status == 'SAVED' && !week.is_finished">
-                              <button type="button" class="btn btn-sm btn-outline-secondary" x-on:click="changeWeekStatus(week.year, week.number, 'edit')"><span class="bi-arrow-clockwise"> Modifier</button>
-                            </div>
-                        </div>
-                    </p>
+  </header><!-- End Header -->
+
+
+  <main id="main">
+
+
+    <!-- ======= Why Us Section ======= -->
+    <section id="menus" class="week-menu section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2 x-show="displayedWeek.is_current">semaine courante</h2>
+          <p>
+            <i class="bi bi-arrow-left-short"></i>
+            Semaine <span x-text="displayedWeek.number"></span>
+            <i class="bi bi-arrow-right-short"></i>
+          </p>
+        </div>
+
+        <div class="row gy-1">
+
+          <div class="col-lg-12 d-flex">
+            <div class="row gy-4">
+              <div class="col-xl-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-box week-infos">
+                  <div class="season-img w-100">
+                    <img src="assets/img/autumn.avif" class="img-fluid">
+                  </div>
+                  <div class="btn-actions">
+                    <button class="btn btn-sm btn-action" x-show="displayedWeek.status == 'DRAFT' && !displayedWeek.is_finished" x-on:click="generateWeek(displayedWeek.year, displayedWeek.number)"><span class="bi-arrow-clockwise"></span> Regénérer</button>
+
+                    <button class="btn btn-sm btn-action" x-show="displayedWeek.status == 'DRAFT' && !displayedWeek.is_finished" x-on:click="changeWeekStatus(displayedWeek.year, displayedWeek.number, 'save')"><span class="bi-check-circle"></span> Enregistrer</button>
+
+                    <button class="btn btn-sm btn-action" x-show="displayedWeek.status == 'SAVED' && !displayedWeek.is_finished" href="#"  x-on:click="changeWeekStatus(displayedWeek.year, displayedWeek.number, 'edit')"><span class="bi-pen"></span> Modifier</button>
+                  </div>
                 </div>
               </div>
+
+              <template x-for="day in displayedWeek.days.sort((a, b) => a.number > b.number)" :key="day.number">
+                <div class="col-xl-3" data-aos="fade-up" data-aos-delay="200">
+                  <div class="icon-box align-items-center" :class="{ 'today': day.is_today }">
+                    <h4 x-text="day.name">{{ day.name }}</h4>
+                    <template x-for="meal in day.meals" :key="meal.type">
+                      <div>
+                        <p x-show="day.meals.length == 1">&nbsp;</p>
+                        <p>
+                          <hr x-show="meal.type == 'Soir'" class="dotted">
+                          <span x-text="meal.dish.name"></span>
+                          <span x-show="meal.dish.is_vegetarian">🌱</span>
+                          <span x-show="meal.dish.from_restaurant">💸</span>
+                          <span x-show="meal.dish.is_long_to_prepare">⏳</span>
+                        </p>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </template>
             </div>
-            </template>
+          </div>
+
+        </div>
+      </div>
+    </section><!-- End Why Us Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container">
+      <div class="row gy-3">
+        <div class="col-lg-3 col-md-6 footer-links">
+          <div class="social-links d-flex">
+            <a href="https://github.com/glucazeau/gestionnaire-menus" class="twitter"><i class="bi bi-github"></i></a>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Yummy</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/yummy-bootstrap-restaurant-website-template/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+
+  </footer><!-- End Footer -->
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
 
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://unpkg.com/mustache@latest"></script>
+  <script>
 
-    const manageMenus = () => ({
-        baseUrl: 'http://localhost:8000',
-        weeks: [],
+  const manageMenus = () => ({
+      baseUrl: 'http://localhost:8000',
+      displayedWeek: {
+        days: []
+      },
 
-        getWeeks() {
-          fetch(this.baseUrl + '/week')
-            .then((response) => response.json())
-            .then((json) => this.weeks = json);
-        },
+      async init() {
+          await this.getCurrentWeek()
+      },
 
-        setCurrentWeek(year, number, json) {
-          for (let i = 0; i < this.weeks.length; i++) {
-            const current_week = this.weeks[i];
-            if (current_week.year == year && current_week.number == number) {
-              this.weeks[i] = json;
-            }
-          }
-        },
-
-        async generateWeek(year, number) {
-          await fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
-            .then((response) => response.json())
-            .then((json) =>  {
-              this.setCurrentWeek(year, number, json)
-            });
-        },
-
-        async changeWeekStatus(year, number, action) {
-          await fetch(this.baseUrl + '/week/' + year + '/' + number, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              action: action,
-            })
-          })
+      async getCurrentWeek() {
+        await fetch(this.baseUrl + '/week/current')
           .then((response) => response.json())
-          .then((json) =>  { 
-            this.setCurrentWeek(year, number, json)
+          .then((json) => this.displayedWeek = json);
+      },
+
+      setDisplayedWeek(json) {
+        this.displayedWeek = json;
+      },
+
+      async generateWeek(year, number) {
+        await fetch(this.baseUrl + '/week/' + year + '/' + number + '?generate=true')
+          .then((response) => response.json())
+          .then((json) =>  {
+            this.setDisplayedWeek(json)
           });
-        },
+      },
 
-        getWeekLabel(week) {
-          weekLabel = 'Semaine ' + week.number
-          if (week.is_finished) {
-            weekLabel += '&nbsp;✔️'
-          }
-          return weekLabel
-        },
+      async changeWeekStatus(year, number, action) {
+        await fetch(this.baseUrl + '/week/' + year + '/' + number, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: action,
+          })
+        })
+        .then((response) => response.json())
+        .then((json) =>  { 
+          this.setDisplayedWeek(json)
+        });
+      },
 
-       getMealTypeLabel(meals, meal) {
-          if (meals.length > 1 && meal.type == 'Soir') {
-              return '&nbsp;🌜'
-          } else {
-              return ''
-          }
-       },
+      getWeekLabel(week) {
+        weekLabel = 'Semaine ' + week.number
+        if (week.is_finished) {
+          weekLabel += ' ✔️'
+        }
+        return weekLabel
+      },
 
-       getSeasonEmoji() {
-        getSeason = d => Math.floor((d.getMonth() / 12 * 4)) % 4;
-        return ['❄️', '🍃', '☀️', '🍂'][getSeason(new Date())];
-       },
+     getMealTypeLabel(meals, meal) {
+        if (meals.length > 1 && meal.type == 'Soir') {
+            return ' 🌜'
+        } else {
+            return ''
+        }
+     },
 
-       getDateTitle() {
-          days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi' ,'vendredi', 'samedi']
-          months = ['janvier', 'février', 'mars', 'avril', 'mai' ,'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
-          d = new Date();
-          return this.getSeasonEmoji() + ' ' + days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' ' + this.getSeasonEmoji()
-       },
-    })
-    </script>
-  </body>
+     getSeasonEmoji() {
+      getSeason = d => Math.floor((d.getMonth() / 12 * 4)) % 4;
+      return ['❄️', '🍃', '☀️', '🍂'][getSeason(new Date())];
+     },
+
+     getDateTitle() {
+        days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi' ,'vendredi', 'samedi']
+        months = ['janvier', 'février', 'mars', 'avril', 'mai' ,'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+        d = new Date();
+        return days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()]
+     },
+
+     renderDay(day) {
+        const template = document.getElementById('day-template').innerHTML;
+        const rendered = Mustache.render(template, { day: day });
+        document.getElementById('target').innerHTML = rendered;
+      }
+  })
+  </script>
+
+</body>
+
 </html>
