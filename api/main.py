@@ -79,7 +79,7 @@ async def get_week(year, number, db: Session = Depends(get_db), generate: bool =
 
 
 @app.get("/week/current", response_model=schemas.Week)
-async def get_week(db: Session = Depends(get_db), generate: bool = False):
+async def get_current_week(db: Session = Depends(get_db), generate: bool = False):
     now = datetime.datetime.now()
     return week.get_week_menus(db, now.year, get_current_week_number(), generate)
 

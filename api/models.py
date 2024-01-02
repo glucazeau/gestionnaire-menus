@@ -12,7 +12,7 @@ from sqlalchemy import (
     Boolean,
     ForeignKeyConstraint,
 )
-from sqlalchemy.orm import Mapped, mapped_column, relationship, Session
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from constants import MealMoment, WeekStatus
 from database import Base
