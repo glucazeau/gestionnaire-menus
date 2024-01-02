@@ -35,6 +35,7 @@ jobs:
       run: |
         python -m pytest -v --cov=. --cov-report xml --cov-report term tests/
     - name: SonarCloud Scan
+      if: ${{ github.actor != 'dependabot[bot]' }}
       uses: SonarSource/sonarcloud-github-action@v2.0.2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
