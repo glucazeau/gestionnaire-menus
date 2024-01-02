@@ -82,7 +82,7 @@
               <div class="col-xl-3" data-aos="fade-up" data-aos-delay="200">
                 <div class="icon-box week-infos">
                   <div class="season-img w-100">
-                    <img src="assets/img/autumn.avif" class="img-fluid">
+                    <img :src="getSeasonPicture()" class="img-fluid">
                   </div>
                   <div class="btn-actions">
                     <button class="btn btn-sm btn-action" x-show="displayedWeek.status == 'DRAFT' && !displayedWeek.is_finished" x-on:click="generateWeek(displayedWeek.year, displayedWeek.number)"><span class="bi-arrow-clockwise"></span> Regénérer</button>
@@ -419,6 +419,12 @@
       getSeasonEmoji() {
         getSeason = d => Math.floor((d.getMonth() / 12 * 4)) % 4;
         return ['❄️', '🍃', '☀️', '🍂'][getSeason(new Date())];
+      },
+
+
+      getSeasonPicture() {
+        getSeason = d => Math.floor((d.getMonth() / 12 * 4)) % 4;
+        return 'assets/img/' + ['winter.jpg', 'spring.jpg', 'summer.webp', 'autumn.avif'][getSeason(new Date())];
       },
 
       getDateTitle() {
