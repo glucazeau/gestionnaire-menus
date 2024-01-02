@@ -28,6 +28,7 @@ class Dish(BaseModel):
     name: str
     from_restaurant: bool
     is_vegetarian: bool
+    is_long_to_prepare: bool
     seasons: List[SeasonDish]
 
 
