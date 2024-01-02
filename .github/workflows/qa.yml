@@ -30,6 +30,10 @@ jobs:
       working-directory: ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api
       run: |
         black . --check
+    - name: Check code with Ruff
+      working-directory: ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api
+      run: |
+        ruff check .
     - name: Test with pytest
       working-directory: ${{ github.workspace }}/${{ env.PROJECT_PATH }}/api
       run: |
