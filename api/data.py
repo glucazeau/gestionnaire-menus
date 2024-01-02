@@ -1,6 +1,6 @@
 from loguru import logger
 
-from models import Season, Dish, seasons_dishes
+from models import Season
 from schemas import CreateDish
 from dish import create_dish
 
