@@ -144,24 +144,24 @@
                         <input type="text" class="form-control" placeholder="Filtrer" x-model="searchDish" aria-describedby="basic-addon1">
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault" x-text="getMonthLabel(new Date().getMonth())"></label>
+                        <input class="form-check-input" type="checkbox" value="" id="currentMonth">
+                        <label class="form-check-label" for="currentMonth" x-text="getMonthLabel(new Date().getMonth())"></label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">🌱 Végétariens</label>
+                        <input class="form-check-input" type="checkbox" value="" id="veganFilter">
+                        <label class="form-check-label" for="veganFilter">🌱 Végétariens</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">🚀 Rapides</label>
+                        <input class="form-check-input" type="checkbox" value="" id="quickFilter">
+                        <label class="form-check-label" for="quickFilter">🚀 Rapides</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">⏳ Longs</label>
+                        <input class="form-check-input" type="checkbox" value="" id="longFilter">
+                        <label class="form-check-label" for="longFilter">⏳ Longs</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">💸 Restaurants</label>
+                        <input class="form-check-input" type="checkbox" value="" id="restaurantFilter">
+                        <label class="form-check-label" for="restaurantFilter">💸 Restaurants</label>
                       </div>
                     </div>
                   </div>
@@ -174,37 +174,37 @@
                         <input type="text" class="form-control" placeholder="Nom" aria-describedby="basic-addon1" x-model="newDishFormData.name">
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.vegetarian">
-                        <label class="form-check-label" for="flexCheckDefault">🌱 Végétarien</label>
+                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.vegetarian" id="veganDish">
+                        <label class="form-check-label" for="veganDish">🌱 Végétarien</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox">
-                        <label class="form-check-label" for="flexCheckDefault">🚀 Rapide</label>
+                        <input class="form-check-input" type="checkbox" id="quickDish">
+                        <label class="form-check-label" for="quickDish">🚀 Rapide</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.is_long_to_prepare">
-                        <label class="form-check-label" for="flexCheckDefault">⏳ Long</label>
+                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.is_long_to_prepare" id="longDish">
+                        <label class="form-check-label" for="longDish">⏳ Long</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.from_restaurant">
-                        <label class="form-check-label" for="flexCheckDefault">💸 Restaurant</label>
+                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.from_restaurant" id="restaurantDish">
+                        <label class="form-check-label" for="restaurantDish">💸 Restaurant</label>
                       </div>
                       <hr class="dotted">
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.seasons" value="1">
-                        <label class="form-check-label" for="flexCheckDefault">🍃 Printemps</label>
+                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.seasons" value="1" id="springDish">
+                        <label class="form-check-label" for="springDish">🍃 Printemps</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.seasons" value="2">
-                        <label class="form-check-label" for="flexCheckDefault">☀️ Été</label>
+                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.seasons" value="2" id="summerDish">
+                        <label class="form-check-label" for="summerDish">☀️ Été</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.seasons" value="3">
-                        <label class="form-check-label" for="flexCheckDefault">🍂 Automne</label>
+                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.seasons" value="3" id="autumnDish">
+                        <label class="form-check-label" for="autumnDish">🍂 Automne</label>
                       </div>
                       <div class="form-check">
-                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.seasons" value=4>
-                        <label class="form-check-label" for="flexCheckDefault">❄️ Hiver</label>
+                        <input class="form-check-input" type="checkbox" x-model="newDishFormData.seasons" value=4 id="winterDish">
+                        <label class="form-check-label" for="winterDish">❄️ Hiver</label>
                       </div>
 
                       <button class="btn btn-sm btn-action" x-on:click="addDish()"><span class="bi-check-circle"></span> Enregistrer</button>
